@@ -1,1 +1,15 @@
-﻿
+﻿global using System.Net;
+global using System.Text.Json.Serialization;
+global using AutoMapper;
+global using Catalog.Application.Bases.Requests;
+global using Catalog.Application.Bases.Responses;
+global using Catalog.Application.Features.Brands.DTOs;
+global using Catalog.Application.Features.Products.DTOs;
+global using Catalog.Application.Features.Products.Requests;
+global using Catalog.Application.Features.Types.DTOs;
+global using Catalog.Core.Entities.Brands;
+global using Catalog.Core.Entities.Products;
+global using Catalog.Core.Entities.Types;
+global using MediatR;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;

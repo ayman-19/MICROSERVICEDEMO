@@ -3,7 +3,7 @@
 internal class Repository<TEntity> : IRepository<TEntity>
     where TEntity : Entity
 {
-    private readonly IMongoCollection<TEntity> _collection;
+    protected readonly IMongoCollection<TEntity> _collection;
 
     public Repository(CatalogDbContext context)
     {

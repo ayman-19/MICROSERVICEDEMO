@@ -1,5 +1,4 @@
 ﻿global using System.Linq.Expressions;
-global using System.Text.Json;
 global using Catalog.Core.Abstractions;
 global using Catalog.Core.Base;
 global using Catalog.Core.Entities.Brands;
@@ -11,3 +10,4 @@ global using Catalog.Infrastructure.Implementations;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using MongoDB.Driver;
+global using MongoDB.Driver.Linq;

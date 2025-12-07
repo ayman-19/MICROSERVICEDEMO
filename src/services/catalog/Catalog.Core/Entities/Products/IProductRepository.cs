@@ -1,3 +1,11 @@
 ﻿namespace Catalog.Core.Entities.Products;
 
-public interface IProductRepository : IRepository<Product> { }
+public interface IProductRepository : IRepository<Product>
+{
+    ValueTask<IReadOnlyList<Product>> PaginateAsync(
+        int pageIndex,
+        int pageSize,
+        string? search,
+        CancellationToken cancellationToken = default
+    );
+}

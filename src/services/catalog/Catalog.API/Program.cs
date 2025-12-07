@@ -1,9 +1,12 @@
 using System.Text.Json;
+using Catalog.Application;
+using Catalog.Application.Features.Products.Requests;
 using Catalog.Core.Entities.Brands;
 using Catalog.Core.Entities.Products;
 using Catalog.Core.Entities.Types;
 using Catalog.Infrastructure;
 using Catalog.Infrastructure.Data;
+using MediatR;
 
 namespace Catalog.API;
 
@@ -30,73 +33,68 @@ public class Program
                 }
             );
         });
-        builder.Services.AddInfrastructureDependencies(builder.Configuration);
+        builder
+            .Services.AddInfrastructureDependencies(builder.Configuration)
+            .RegisterApplictionDependencies(builder.Configuration);
 
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
-
         var app = builder.Build();
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-        }
+        app.MapOpenApi();
         app.UseSwagger();
         app.UseSwaggerUI();
-
         app.UseHttpsRedirection();
-
         app.UseAuthorization();
-
         app.MapControllers();
-
         #region seeding
-
         var env = app.Services.GetRequiredService<IWebHostEnvironment>();
-
         var basePath = Path.Combine(env.WebRootPath, "Seeds");
-
         var _database = app.Services.GetRequiredService<CatalogDbContext>();
-
         //_database.Products.DeleteMany(x => true);
-
         // create brands
         var brandPath = Path.Combine(basePath, "brands.json");
         var brands = JsonSerializer.Deserialize<IEnumerable<Brand>>(File.ReadAllText(brandPath));
-
         Seeding.Seed(
             // _database.GetCollection<Brand>(nameof(EntityType.Brands)),
             _database.Brands,
             brands ?? new List<Brand>(),
             CancellationToken.None
         );
-
         // create product
         var productPath = Path.Combine(basePath, "products.json");
         var products = JsonSerializer.Deserialize<IEnumerable<Product>>(
             File.ReadAllText(productPath)
         );
-
         Seeding.Seed(_database.Products, products ?? new List<Product>(), CancellationToken.None);
-
         // create types
         var typePath = Path.Combine(basePath, "types.json");
         var types = JsonSerializer.Deserialize<IEnumerable<ProductType>>(
             File.ReadAllText(typePath)
         );
-
         Seeding.Seed(
             _database.ProductTypes,
             types ?? new List<ProductType>(),
             CancellationToken.None
         );
-
         #endregion
-
         app.MapGet(
             "/products",
-            async (IProductRepository product, CancellationToken ct) =>
-                await product.GetAllAsync(p => true, ct)
+            async (
+                ISender sender,
+                int pageIndex,
+                int pageSize,
+                string? search,
+                CancellationToken ct
+            ) =>
+                await sender.Send(
+                    new PaginateProductsQuery
+                    {
+                        PageIndex = pageIndex,
+                        PageSize = pageSize,
+                        Search = search,
+                    },
+                    ct
+                )
         );
         app.MapGet(
             "/brands",
@@ -119,7 +117,6 @@ public class Program
                 return Results.Ok(prod);
             }
         );
-
         app.MapPost(
             "/products",
             async (IProductRepository productRepository, Product product, CancellationToken ct) =>
@@ -128,7 +125,6 @@ public class Program
                 return Results.Created($"/products/{product.Id}", product);
             }
         );
-
         app.Run();
     }
 }
