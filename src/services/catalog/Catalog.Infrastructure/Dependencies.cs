@@ -1,0 +1,19 @@
+﻿namespace Catalog.Infrastructure;
+
+public static class Dependencies
+{
+    public static IServiceCollection AddInfrastructureDependencies(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
+    {
+        services
+            .AddSingleton<CatalogDbContext>()
+            .AddScoped(typeof(IRepository<>), typeof(Repository<>))
+            .AddScoped<IProductRepository, ProductRepository>()
+            .AddScoped<ITypeRepository, TypeRepository>()
+            .AddScoped<IBrandRepository, BrandRepository>();
+
+        return services;
+    }
+}

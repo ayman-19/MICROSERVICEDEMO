@@ -1,0 +1,13 @@
+﻿global using System.Linq.Expressions;
+global using System.Text.Json;
+global using Catalog.Core.Abstractions;
+global using Catalog.Core.Base;
+global using Catalog.Core.Entities.Brands;
+global using Catalog.Core.Entities.Products;
+global using Catalog.Core.Entities.Types;
+global using Catalog.Core.Enums.Entities;
+global using Catalog.Infrastructure.Data;
+global using Catalog.Infrastructure.Implementations;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using MongoDB.Driver;

@@ -10,8 +10,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Seeds\brands.json" />
+    <Content Remove="wwwroot\Seeds\products.json" />
+    <Content Remove="wwwroot\Seeds\types.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Seeds\brands.json" />
+    <None Include="wwwroot\Seeds\products.json" />
+    <None Include="wwwroot\Seeds\types.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Catalog.Application\Catalog.Application.csproj" />
+    <ProjectReference Include="..\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
