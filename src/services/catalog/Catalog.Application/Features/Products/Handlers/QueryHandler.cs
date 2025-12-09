@@ -1,7 +1,8 @@
 ﻿namespace Catalog.Application.Features.Products.Handlers;
 
-public sealed record PaginateProductsHandler(IProductRepository productRepository, IMapper mapper)
-    : IRequestHandler<PaginateProductsQuery, PaginationResponse<IEnumerable<ProductDto>>>
+public sealed record ProductQueryHandler(IProductRepository productRepository, IMapper mapper)
+    : IRequestHandler<PaginateProductsQuery, PaginationResponse<IEnumerable<ProductDto>>>,
+        IRequestHandler<GetProductByIdQuery, ResponseOf<ProductDto>>
 {
     public async Task<PaginationResponse<IEnumerable<ProductDto>>> Handle(
         PaginateProductsQuery request,
@@ -24,5 +25,14 @@ public sealed record PaginateProductsHandler(IProductRepository productRepositor
             Count = products.Count(),
             Result = mapper.Map<IEnumerable<ProductDto>>(products),
         };
+    }
+
+    public async Task<ResponseOf<ProductDto>> Handle(
+        GetProductByIdQuery request,
+        CancellationToken cancellationToken
+    )
+    {
+        var product = await productRepository.FindAsync(request.Id, cancellationToken);
+        return new() { Result = mapper.Map<ProductDto>(product) };
     }
 }

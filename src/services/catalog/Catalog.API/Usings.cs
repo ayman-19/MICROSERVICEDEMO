@@ -1,1 +1,15 @@
-﻿global using Microsoft.OpenApi;
+﻿global using System.ComponentModel.DataAnnotations;
+global using System.Text.Json;
+global using Asp.Versioning;
+global using Catalog.Application;
+global using Catalog.Application.Bases.Responses;
+global using Catalog.Application.Features.Products.DTOs;
+global using Catalog.Application.Features.Products.Requests;
+global using Catalog.Core.Entities.Brands;
+global using Catalog.Core.Entities.Products;
+global using Catalog.Core.Entities.Types;
+global using Catalog.Infrastructure;
+global using Catalog.Infrastructure.Data;
+global using MediatR;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.OpenApi;

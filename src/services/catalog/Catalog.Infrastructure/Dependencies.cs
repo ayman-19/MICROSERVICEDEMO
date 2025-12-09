@@ -8,7 +8,7 @@ public static class Dependencies
     )
     {
         services
-            .AddSingleton<CatalogDbContext>()
+            .AddScoped<CatalogDbContext>()
             .AddScoped(typeof(IRepository<>), typeof(Repository<>))
             .AddScoped<IProductRepository, ProductRepository>()
             .AddScoped<ITypeRepository, TypeRepository>()

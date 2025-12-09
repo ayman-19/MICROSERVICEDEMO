@@ -5,5 +5,7 @@ public sealed class TypeProfile : Profile
     public TypeProfile()
     {
         CreateMap<ProductType, TypeDto>().ReverseMap();
+        CreateMap<CreateTypeCommand, ProductType>();
+        CreateMap<UpdateTypeCommand, ProductType>();
     }
 }

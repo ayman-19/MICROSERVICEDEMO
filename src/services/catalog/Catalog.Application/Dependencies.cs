@@ -2,7 +2,7 @@
 
 public static class Depndencies
 {
-    public static IServiceCollection RegisterApplictionDependencies(
+    public static IServiceCollection AddApplictionDependencies(
         this IServiceCollection services,
         IConfiguration configuration
     )

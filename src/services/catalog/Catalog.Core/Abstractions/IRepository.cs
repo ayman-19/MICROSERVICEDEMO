@@ -3,9 +3,9 @@
 public interface IRepository<TEntity>
     where TEntity : Entity
 {
-    ValueTask CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
-    ValueTask Update(TEntity entity, CancellationToken cancellationToken = default);
-    ValueTask Delete(TEntity entity, CancellationToken cancellationToken = default);
+    ValueTask<bool> CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
+    ValueTask<bool> Update(TEntity entity, CancellationToken cancellationToken = default);
+    ValueTask<bool> Delete(TEntity entity, CancellationToken cancellationToken = default);
     ValueTask<TEntity> FindAsync(string id, CancellationToken cancellationToken = default);
     ValueTask<bool> AnyAsync(
         Expression<Func<TEntity, bool>> filter,

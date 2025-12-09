@@ -26,13 +26,23 @@ internal class Repository<TEntity> : IRepository<TEntity>
         CancellationToken cancellationToken = default
     ) => await _collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 
-    public async ValueTask CreateAsync(
+    public async ValueTask<bool> CreateAsync(
         TEntity entity,
         CancellationToken cancellationToken = default
-    ) => await _collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
+    )
+    {
+        await _collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
+        return true;
+    }
 
-    public async ValueTask Delete(TEntity entity, CancellationToken cancellationToken = default) =>
-        await _collection.DeleteOneAsync(e => e.Id == entity.Id, cancellationToken);
+    public async ValueTask<bool> Delete(
+        TEntity entity,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var success = await _collection.DeleteOneAsync(e => e.Id == entity.Id, cancellationToken);
+        return success.DeletedCount > 0 && success.IsAcknowledged;
+    }
 
     public async ValueTask<TEntity> FindAsync(
         string id,
@@ -44,10 +54,16 @@ internal class Repository<TEntity> : IRepository<TEntity>
         CancellationToken cancellationToken = default
     ) => await _collection.Find(filter).ToListAsync(cancellationToken);
 
-    public async ValueTask Update(TEntity entity, CancellationToken cancellationToken = default) =>
-        await _collection.ReplaceOneAsync(
+    public async ValueTask<bool> Update(
+        TEntity entity,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var success = await _collection.ReplaceOneAsync(
             filter: x => x.Id == entity.Id,
             replacement: entity,
             cancellationToken: cancellationToken
         );
+        return success.ModifiedCount > 0 && success.IsAcknowledged;
+    }
 }

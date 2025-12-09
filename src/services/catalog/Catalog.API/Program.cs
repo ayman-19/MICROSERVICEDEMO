@@ -1,13 +1,3 @@
-using System.Text.Json;
-using Catalog.Application;
-using Catalog.Application.Features.Products.Requests;
-using Catalog.Core.Entities.Brands;
-using Catalog.Core.Entities.Products;
-using Catalog.Core.Entities.Types;
-using Catalog.Infrastructure;
-using Catalog.Infrastructure.Data;
-using MediatR;
-
 namespace Catalog.API;
 
 public class Program
@@ -15,7 +5,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc(
@@ -35,21 +25,28 @@ public class Program
         });
         builder
             .Services.AddInfrastructureDependencies(builder.Configuration)
-            .RegisterApplictionDependencies(builder.Configuration);
-
+            .AddApplictionDependencies(builder.Configuration);
+        builder.Services.AddApiVersioning(options =>
+        {
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new ApiVersion(1, 10);
+            options.ReportApiVersions = true;
+        });
         builder.Services.AddControllers();
-        builder.Services.AddOpenApi();
+        //builder.Services.AddOpenApi();
         var app = builder.Build();
-        app.MapOpenApi();
+        //app.MapOpenApi();
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(c => c.EnableFilter());
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
         #region seeding
         var env = app.Services.GetRequiredService<IWebHostEnvironment>();
         var basePath = Path.Combine(env.WebRootPath, "Seeds");
-        var _database = app.Services.GetRequiredService<CatalogDbContext>();
+        using var asyncScope = app.Services.CreateAsyncScope();
+        var _database = asyncScope.ServiceProvider.GetService<CatalogDbContext>();
+        //var _database = app.Services.GetRequiredService<CatalogDbContext>();
         //_database.Products.DeleteMany(x => true);
         // create brands
         var brandPath = Path.Combine(basePath, "brands.json");
@@ -77,54 +74,6 @@ public class Program
             CancellationToken.None
         );
         #endregion
-        app.MapGet(
-            "/products",
-            async (
-                ISender sender,
-                int pageIndex,
-                int pageSize,
-                string? search,
-                CancellationToken ct
-            ) =>
-                await sender.Send(
-                    new PaginateProductsQuery
-                    {
-                        PageIndex = pageIndex,
-                        PageSize = pageSize,
-                        Search = search,
-                    },
-                    ct
-                )
-        );
-        app.MapGet(
-            "/brands",
-            async (IBrandRepository brand, CancellationToken ct) =>
-                await brand.GetAllAsync(p => true, ct)
-        );
-        app.MapGet(
-            "/types",
-            async (ITypeRepository type, CancellationToken ct) =>
-                await type.GetAllAsync(p => true, ct)
-        );
-        app.MapDelete(
-            "/products/{id}",
-            async (IProductRepository product, string id, CancellationToken ct) =>
-            {
-                var prod = await product.FindAsync(id, ct);
-
-                await product.Delete(prod, ct);
-
-                return Results.Ok(prod);
-            }
-        );
-        app.MapPost(
-            "/products",
-            async (IProductRepository productRepository, Product product, CancellationToken ct) =>
-            {
-                await productRepository.CreateAsync(product, ct);
-                return Results.Created($"/products/{product.Id}", product);
-            }
-        );
         app.Run();
     }
 }
