@@ -14,6 +14,7 @@ public sealed record BrandQuerysHandler(IBrandRepository brandRepository, IMappe
             request.PageIndex,
             request.PageSize,
             request.Search,
+            request.SortDirection,
             cancellationToken
         );
 

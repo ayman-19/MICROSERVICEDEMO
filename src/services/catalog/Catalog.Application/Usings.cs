@@ -15,3 +15,4 @@ global using Catalog.Core.Entities.Types;
 global using MediatR;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
+global using MongoDB.Driver;

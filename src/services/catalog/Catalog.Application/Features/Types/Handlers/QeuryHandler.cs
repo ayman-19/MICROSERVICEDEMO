@@ -14,6 +14,7 @@ public sealed record TypeQuerysHandler(ITypeRepository typeRepository, IMapper m
             request.PageIndex,
             request.PageSize,
             request.Search,
+            request.SortDirection,
             cancellationToken
         );
 

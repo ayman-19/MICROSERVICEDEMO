@@ -6,6 +6,7 @@ public interface IBrandRepository : IRepository<Brand>
         int pageIndex,
         int pageSize,
         string? search,
+        SortDirection sortDirection,
         CancellationToken cancellationToken = default
     );
 }

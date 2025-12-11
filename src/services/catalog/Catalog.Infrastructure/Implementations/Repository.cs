@@ -66,4 +66,11 @@ internal class Repository<TEntity> : IRepository<TEntity>
         );
         return success.ModifiedCount > 0 && success.IsAcknowledged;
     }
+
+    private FilterDefinition<TEntity> BuildFilter(Expression<Func<TEntity, bool>> expression)
+    {
+        var f = Builders<TEntity>.Filter.Empty;
+        f = f & Builders<TEntity>.Filter.Where(x => x.Id == "");
+        return Builders<TEntity>.Filter.Where(expression);
+    }
 }

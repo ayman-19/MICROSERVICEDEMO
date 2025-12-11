@@ -9,6 +9,7 @@ internal sealed class ProductRepository : Repository<Product>, IProductRepositor
         int pageIndex,
         int pageSize,
         string? search,
+        SortDirection sortDirection,
         CancellationToken cancellationToken = default
     )
     {
@@ -23,9 +24,13 @@ internal sealed class ProductRepository : Repository<Product>, IProductRepositor
             );
         }
 
-        return await query
-            .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync(cancellationToken);
+        query = sortDirection switch
+        {
+            SortDirection.Ascending => query.OrderBy(p => p.Name),
+            SortDirection.Descending => query.OrderByDescending(p => p.Name),
+            _ => query,
+        };
+
+        return await query.Paginate(pageIndex, pageSize).ToListAsync(cancellationToken);
     }
 }

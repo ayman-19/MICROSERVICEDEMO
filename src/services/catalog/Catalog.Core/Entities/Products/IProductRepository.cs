@@ -6,6 +6,7 @@ public interface IProductRepository : IRepository<Product>
         int pageIndex,
         int pageSize,
         string? search,
+        SortDirection sortDirection,
         CancellationToken cancellationToken = default
     );
 }

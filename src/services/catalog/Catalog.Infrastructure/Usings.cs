@@ -5,6 +5,7 @@ global using Catalog.Core.Entities.Brands;
 global using Catalog.Core.Entities.Products;
 global using Catalog.Core.Entities.Types;
 global using Catalog.Core.Enums.Entities;
+global using Catalog.Core.Extensions;
 global using Catalog.Infrastructure.Data;
 global using Catalog.Infrastructure.Implementations;
 global using Microsoft.Extensions.Configuration;

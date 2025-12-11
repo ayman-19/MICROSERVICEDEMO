@@ -14,6 +14,7 @@ public sealed record ProductQueryHandler(IProductRepository productRepository, I
             request.PageIndex,
             request.PageSize,
             request.Search,
+            request.SortDirection,
             cancellationToken
         );
 
