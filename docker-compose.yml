@@ -1,0 +1,26 @@
+services:
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: src/services/catalog/Catalog.API/Dockerfile
+
+    ports:
+     - "8080:8080"
+    depends_on:
+     - catalogdb
+    environment:
+     - MongoSettings__Connection=mongodb://catalogdb:27017
+     - MongoSettings__DatabaseName=CatalogDb
+
+  catalogdb:
+    image: mongo
+    container_name: catalogdb
+    ports:
+      - "27017:27017"
+    volumes:
+      - catalogdbdata:/data/db
+ 
+volumes:
+  catalogdbdata:
+  

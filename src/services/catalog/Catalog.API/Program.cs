@@ -1,3 +1,5 @@
+﻿using Catalog.Infrastructure.Settings;
+
 namespace Catalog.API;
 
 public class Program
@@ -5,6 +7,16 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.WebHost.UseKestrel(options =>
+        {
+            options.ListenAnyIP(8080);
+        });
+
+        builder.WebHost.ConfigureKestrel(o =>
+        {
+            o.ConfigureHttpsDefaults(_ => { });
+        });
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(opt =>
         {
@@ -26,6 +38,11 @@ public class Program
         builder
             .Services.AddInfrastructureDependencies(builder.Configuration)
             .AddApplictionDependencies(builder.Configuration);
+
+        builder.Services.Configure<MongoSettings>(
+            builder.Configuration.GetSection("MongoSettings")
+        );
+
         builder.Services.AddApiVersioning(options =>
         {
             options.AssumeDefaultVersionWhenUnspecified = true;
@@ -38,41 +55,38 @@ public class Program
         //app.MapOpenApi();
         app.UseSwagger();
         app.UseSwaggerUI(c => c.EnableFilter());
-        app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+
         #region seeding
         var env = app.Services.GetRequiredService<IWebHostEnvironment>();
         var basePath = Path.Combine(env.WebRootPath, "Seeds");
-        using var asyncScope = app.Services.CreateAsyncScope();
-        var _database = asyncScope.ServiceProvider.GetService<CatalogDbContext>();
-        //var _database = app.Services.GetRequiredService<CatalogDbContext>();
-        //_database.Products.DeleteMany(x => true);
-        // create brands
+
+        using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+        var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+
         var brandPath = Path.Combine(basePath, "brands.json");
-        var brands = JsonSerializer.Deserialize<IEnumerable<Brand>>(File.ReadAllText(brandPath));
-        Seeding.Seed(
-            // _database.GetCollection<Brand>(nameof(EntityType.Brands)),
-            _database.Brands,
-            brands ?? new List<Brand>(),
-            CancellationToken.None
-        );
-        // create product
+        var brands =
+            JsonSerializer.Deserialize<IEnumerable<Brand>>(File.ReadAllText(brandPath))
+            ?? Enumerable.Empty<Brand>();
+
+        Seeding.Seed(db.Brands, brands, CancellationToken.None);
+
         var productPath = Path.Combine(basePath, "products.json");
-        var products = JsonSerializer.Deserialize<IEnumerable<Product>>(
-            File.ReadAllText(productPath)
-        );
-        Seeding.Seed(_database.Products, products ?? new List<Product>(), CancellationToken.None);
-        // create types
+        var products =
+            JsonSerializer.Deserialize<IEnumerable<Product>>(File.ReadAllText(productPath))
+            ?? Enumerable.Empty<Product>();
+
+        Seeding.Seed(db.Products, products, CancellationToken.None);
+
         var typePath = Path.Combine(basePath, "types.json");
-        var types = JsonSerializer.Deserialize<IEnumerable<ProductType>>(
-            File.ReadAllText(typePath)
-        );
-        Seeding.Seed(
-            _database.ProductTypes,
-            types ?? new List<ProductType>(),
-            CancellationToken.None
-        );
+        var types =
+            JsonSerializer.Deserialize<IEnumerable<ProductType>>(File.ReadAllText(typePath))
+            ?? Enumerable.Empty<ProductType>();
+
+        Seeding.Seed(db.ProductTypes, types, CancellationToken.None);
+
         #endregion
         app.Run();
     }

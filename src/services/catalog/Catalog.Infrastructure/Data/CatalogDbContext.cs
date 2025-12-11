@@ -1,13 +1,17 @@
-﻿namespace Catalog.Infrastructure.Data;
+﻿using Catalog.Infrastructure.Settings;
+using Microsoft.Extensions.Options;
+
+namespace Catalog.Infrastructure.Data;
 
 public class CatalogDbContext
 {
     private readonly IMongoDatabase _database;
 
-    public CatalogDbContext(IConfiguration config)
+    public CatalogDbContext(IOptions<MongoSettings> options)
     {
-        var client = new MongoClient(config["MongoSettings:Connection"]);
-        _database = client.GetDatabase(config["MongoSettings:DatabaseName"]);
+        var settings = options.Value;
+        var client = new MongoClient(settings.Connection);
+        _database = client.GetDatabase(settings.DatabaseName);
     }
 
     public IMongoCollection<Product> Products =>

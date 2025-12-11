@@ -14,6 +14,7 @@ public static class Dependencies
             .AddScoped<ITypeRepository, TypeRepository>()
             .AddScoped<IBrandRepository, BrandRepository>();
 
+        //services.Configure<MongoSettings>(configuration.GetSection("MongoSettings"));
         return services;
     }
 }
