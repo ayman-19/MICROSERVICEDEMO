@@ -14,6 +14,7 @@ global using Catalog.Core.Entities.Products;
 global using Catalog.Core.Entities.Types;
 global using Catalog.Infrastructure;
 global using Catalog.Infrastructure.Data;
+global using Catalog.Infrastructure.Settings;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.OpenApi;

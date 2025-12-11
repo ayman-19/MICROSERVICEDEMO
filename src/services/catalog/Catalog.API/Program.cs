@@ -1,5 +1,3 @@
-﻿using Catalog.Infrastructure.Settings;
-
 namespace Catalog.API;
 
 public class Program
@@ -7,16 +5,6 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.WebHost.UseKestrel(options =>
-        {
-            options.ListenAnyIP(8080);
-        });
-
-        builder.WebHost.ConfigureKestrel(o =>
-        {
-            o.ConfigureHttpsDefaults(_ => { });
-        });
-
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(opt =>
         {
@@ -38,11 +26,9 @@ public class Program
         builder
             .Services.AddInfrastructureDependencies(builder.Configuration)
             .AddApplictionDependencies(builder.Configuration);
-
         builder.Services.Configure<MongoSettings>(
             builder.Configuration.GetSection("MongoSettings")
         );
-
         builder.Services.AddApiVersioning(options =>
         {
             options.AssumeDefaultVersionWhenUnspecified = true;
@@ -88,6 +74,7 @@ public class Program
         Seeding.Seed(db.ProductTypes, types, CancellationToken.None);
 
         #endregion
+
         app.Run();
     }
 }

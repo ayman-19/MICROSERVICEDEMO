@@ -2,7 +2,7 @@
   <Folder Name="/src/" />
   <Folder Name="/src/services/" />
   <Folder Name="/src/services/catalog/">
-    <Project Path="src/services/catalog/Catalog.API/Catalog.API.csproj" />
+    <Project Path="src/services/catalog/Catalog.API/Catalog.API.csproj" Id="8dfe4028-39d6-4d76-9f14-31e422858ae1" />
     <Project Path="src/services/catalog/Catalog.Application/Catalog.Application.csproj" />
     <Project Path="src/services/catalog/Catalog.Core/Catalog.Core.csproj" />
     <Project Path="src/services/catalog/Catalog.Infrastructure/Catalog.Infrastructure.csproj" />
