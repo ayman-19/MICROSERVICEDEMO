@@ -1,0 +1,13 @@
+﻿global using System.Net;
+global using System.Text.Json.Serialization;
+global using AutoMapper;
+global using Basket.Application.Bases.Responses;
+global using Basket.Application.Features.ShopingCarts.DTOs;
+global using Basket.Application.Features.ShopingCarts.Requests;
+global using Basket.Core.Entities.ShopingCartItems;
+global using Basket.Core.Entities.ShopingCarts;
+global using Basket.Core.Entities.ShopingCartsp;
+global using Catalog.Application.Bases.Responses;
+global using MediatR;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
