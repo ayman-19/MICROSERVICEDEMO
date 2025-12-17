@@ -1,2 +1,9 @@
 ﻿global using Asp.Versioning;
+global using Basket.Application;
+global using Basket.Application.Features.ShopingCarts.DTOs;
+global using Basket.Application.Features.ShopingCarts.Requests;
+global using Basket.Infrastructure;
+global using Catalog.Application.Bases.Responses;
+global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.OpenApi;
