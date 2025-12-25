@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option csharp_namespace = "Discount.Grpc.Protos";
+
+package discount.v1;
+
+service DiscountProtoService {
+  rpc GetDiscount (GetDiscountRequest) returns (DiscountModel);
+  rpc CreateDiscount (CreateDiscountRequest) returns (DiscountModel);
+  rpc UpdateDiscount (UpdateDiscountRequest) returns (DiscountModel);
+  rpc DeleteDiscount (DeleteDiscountRequest) returns (DiscountModel);
+  rpc PaginateDiscounts (PaginateDiscountsRequest) returns (PaginateDiscountsResponse);
+}
+
+message GetDiscountRequest {
+  int32 Id = 1;
+}
+
+message DiscountModel {
+  int32 Id = 1;
+  string ProductName = 2;
+  string Description = 3;
+  double Amount = 4;
+}
+
+message CreateDiscountRequest {
+  string ProductName = 1;
+  string Description = 2;
+  double Amount = 3;
+}
+
+message UpdateDiscountRequest {
+  int32 Id = 1;
+  string ProductName = 2;
+  string Description = 3;
+  double Amount = 4;
+}
+message DeleteDiscountRequest {
+  int32 Id = 1;
+}
+message PaginateDiscountsRequest {
+  int32 PageIndex = 1;
+  int32 PageSize = 2;
+  string Search = 3;
+}
+
+message PaginateDiscountsResponse {
+  repeated DiscountModel Discounts = 1;
+  int32 TotalCount = 2;
+  int32 PageIndex = 3;
+  int32 PageSize = 4;
+  int32 Count = 5;
+}

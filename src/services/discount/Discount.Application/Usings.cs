@@ -1,0 +1,10 @@
+﻿global using System.Net;
+global using System.Text.Json.Serialization;
+global using AutoMapper;
+global using Discount.Application.Bases.Requests;
+global using Discount.Application.Bases.Responses;
+global using Discount.Application.Features.Coupons.Requests;
+global using Discount.Core.Entities.Coupons;
+global using Discount.Grpc.Protos;
+global using MediatR;
+global using Microsoft.Extensions.DependencyInjection;
