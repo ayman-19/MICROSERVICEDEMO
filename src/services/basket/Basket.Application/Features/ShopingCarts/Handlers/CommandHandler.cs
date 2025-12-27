@@ -2,6 +2,7 @@
 
 public sealed record ShopingCartCommandHandler(
     IShopingCartRepository shopingCartRepository,
+    IDiscountService DiscountService,
     IMapper mapper
 )
     : IRequestHandler<DeleteShopingCartByIdCommand, ResponseOf<ShopingCartDto>>,
@@ -33,6 +34,18 @@ public sealed record ShopingCartCommandHandler(
         CancellationToken cancellationToken
     )
     {
+        foreach (var item in request.ShopingCartItems)
+        {
+            var discount = await DiscountService.GetByNameAsync(
+                item.ProductName,
+                cancellationToken
+            );
+            if (discount is not null)
+            {
+                item.Price -= discount.Amount;
+            }
+        }
+
         var shopingCart = mapper.Map<ShopingCart>(request);
         await shopingCartRepository.CreateAsync(shopingCart, cancellationToken);
         return new() { Result = mapper.Map<ShopingCartDto>(shopingCart) };

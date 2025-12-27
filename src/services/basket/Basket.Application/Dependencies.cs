@@ -9,6 +9,11 @@ public static class Depndencies
     {
         services.AddAutoMapper(typeof(Depndencies));
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Depndencies).Assembly));
+        services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(cfg =>
+            cfg.Address = new Uri(configuration["GrpcSettings:DiscountUrl"])
+        );
+        services.AddScoped<IDiscountService, DiscountService>();
+
         return services;
     }
 }

@@ -6,6 +6,7 @@ package discount.v1;
 
 service DiscountProtoService {
   rpc GetDiscount (GetDiscountRequest) returns (DiscountModel);
+  rpc GetDiscountByName (GetDiscountByNameRequest) returns (DiscountModel);
   rpc CreateDiscount (CreateDiscountRequest) returns (DiscountModel);
   rpc UpdateDiscount (UpdateDiscountRequest) returns (DiscountModel);
   rpc DeleteDiscount (DeleteDiscountRequest) returns (DiscountModel);
@@ -14,6 +15,10 @@ service DiscountProtoService {
 
 message GetDiscountRequest {
   int32 Id = 1;
+}
+
+message GetDiscountByNameRequest {
+  string Name = 1;
 }
 
 message DiscountModel {

@@ -1,4 +1,6 @@
-﻿namespace Discount.API.Services;
+﻿using Discount.Application.Features.Coupons.Requests;
+
+namespace Discount.API.Services;
 
 public sealed class DiscountService(ISender sender) : DiscountProtoService.DiscountProtoServiceBase
 {
@@ -7,8 +9,11 @@ public sealed class DiscountService(ISender sender) : DiscountProtoService.Disco
         ServerCallContext context
     )
     {
-        var command = await sender.Send(request, context.CancellationToken);
-        return command as DiscountModel ?? new();
+        var command = await sender.Send(
+            new CreateDiscountCommand(request),
+            context.CancellationToken
+        );
+        return command;
     }
 
     public override async Task<DiscountModel> UpdateDiscount(
@@ -16,8 +21,11 @@ public sealed class DiscountService(ISender sender) : DiscountProtoService.Disco
         ServerCallContext context
     )
     {
-        var command = await sender.Send(request, context.CancellationToken);
-        return command as DiscountModel ?? new();
+        var command = await sender.Send(
+            new UpdateDiscountCommand(request),
+            context.CancellationToken
+        );
+        return command;
     }
 
     public override async Task<DiscountModel> DeleteDiscount(
@@ -25,8 +33,11 @@ public sealed class DiscountService(ISender sender) : DiscountProtoService.Disco
         ServerCallContext context
     )
     {
-        var command = await sender.Send(request, context.CancellationToken);
-        return command as DiscountModel ?? new();
+        var command = await sender.Send(
+            new DeleteDiscountCommand(request),
+            context.CancellationToken
+        );
+        return command;
     }
 
     public override async Task<DiscountModel> GetDiscount(
@@ -34,8 +45,23 @@ public sealed class DiscountService(ISender sender) : DiscountProtoService.Disco
         ServerCallContext context
     )
     {
-        var query = await sender.Send(request, context.CancellationToken);
-        return query as DiscountModel ?? new();
+        var query = await sender.Send(
+            new GetDiscountByIdQuery(request.Id),
+            context.CancellationToken
+        );
+        return query;
+    }
+
+    public override async Task<DiscountModel> GetDiscountByName(
+        GetDiscountByNameRequest request,
+        ServerCallContext context
+    )
+    {
+        var query = await sender.Send(
+            new GetDiscountByNameQuery(request.Name),
+            context.CancellationToken
+        );
+        return query;
     }
 
     public override async Task<PaginateDiscountsResponse> PaginateDiscounts(
@@ -43,19 +69,26 @@ public sealed class DiscountService(ISender sender) : DiscountProtoService.Disco
         ServerCallContext context
     )
     {
-        var query = await sender.Send(request, context.CancellationToken);
+        var query = await sender.Send(
+            new PaginateDiscountQuery()
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Search = request.Search,
+            },
+            context.CancellationToken
+        );
 
-        var result = query as PaginationResponse<IEnumerable<DiscountModel>>;
-        if (result is not null)
+        if (query is not null)
         {
             var response = new PaginateDiscountsResponse
             {
-                TotalCount = (int)result.TotalCount,
-                PageIndex = result.PageIndex,
-                PageSize = result.PageSize,
-                Count = result.Count,
+                TotalCount = (int)query.TotalCount,
+                PageIndex = query.PageIndex,
+                PageSize = query.PageSize,
+                Count = query.Count,
             };
-            response.Discounts.AddRange(result.Result);
+            response.Discounts.AddRange(query.Result);
 
             return response;
         }

@@ -2,6 +2,7 @@
 
 internal sealed record DiscountQueryHandler(ICouponRepository CouponRepository, IMapper Mapper)
     : IRequestHandler<GetDiscountByIdQuery, DiscountModel>,
+        IRequestHandler<GetDiscountByNameQuery, DiscountModel>,
         IRequestHandler<PaginateDiscountQuery, PaginationResponse<IEnumerable<DiscountModel>>>
 {
     public async Task<DiscountModel> Handle(
@@ -13,7 +14,14 @@ internal sealed record DiscountQueryHandler(ICouponRepository CouponRepository, 
         if (!exist)
             return new();
         var coupon = await CouponRepository.GetAsync(request.Id, cancellationToken);
-        return Mapper.Map<DiscountModel>(coupon);
+        return new DiscountModel
+        {
+            Id = (int)coupon.Id,
+            ProductName = coupon.ProductName,
+            Description = coupon.Description,
+            Amount = (double)coupon.Amount,
+        };
+        //return Mapper.Map<DiscountModel>(coupon);
     }
 
     public async Task<PaginationResponse<IEnumerable<DiscountModel>>> Handle(
@@ -37,5 +45,17 @@ internal sealed record DiscountQueryHandler(ICouponRepository CouponRepository, 
             Count = pagedCoupons.Count(),
             Result = Mapper.Map<IEnumerable<DiscountModel>>(pagedCoupons),
         };
+    }
+
+    public async Task<DiscountModel> Handle(
+        GetDiscountByNameQuery request,
+        CancellationToken cancellationToken
+    )
+    {
+        var exist = await CouponRepository.AnyAsync(request.name, cancellationToken);
+        if (!exist)
+            return new();
+        var coupon = await CouponRepository.GetAsync(request.name, cancellationToken);
+        return Mapper.Map<DiscountModel>(coupon);
     }
 }

@@ -20,6 +20,31 @@ internal sealed class CouponRepository(NpgsqlConnection connection) : ICouponRep
         return result.HasValue;
     }
 
+    public async ValueTask<bool> AnyAsync(
+        string name,
+        CancellationToken cancellationToken = default
+    )
+    {
+        const string sql = """
+            SELECT 1
+            FROM Coupon
+            WHERE ProductName = @ProductName
+            LIMIT 1;
+            """;
+
+        //await using var connection = CreateConnection();
+
+        var result = await connection.ExecuteScalarAsync<int?>(
+            new CommandDefinition(
+                sql,
+                new { ProductName = name },
+                cancellationToken: cancellationToken
+            )
+        );
+
+        return result.HasValue;
+    }
+
     public async ValueTask<Coupon> CreateAsync(
         Coupon coupon,
         CancellationToken cancellationToken = default
@@ -61,7 +86,7 @@ internal sealed class CouponRepository(NpgsqlConnection connection) : ICouponRep
     {
         const string sql = """
             DELETE FROM Coupon
-            WHERE id = @Id
+            WHERE Id = @Id
             RETURNING
                 Id,
                 ProductName,
@@ -85,7 +110,7 @@ internal sealed class CouponRepository(NpgsqlConnection connection) : ICouponRep
                 Id,
                 ProductName,
                 Description,
-                Amount;
+                Amount
             FROM Coupon
             WHERE id = @Id;
             """;
@@ -94,6 +119,34 @@ internal sealed class CouponRepository(NpgsqlConnection connection) : ICouponRep
 
         var coupon = await connection.QuerySingleAsync<Coupon>(
             new CommandDefinition(sql, new { Id = id }, cancellationToken: cancellationToken)
+        );
+
+        return coupon;
+    }
+
+    public async ValueTask<Coupon> GetAsync(
+        string name,
+        CancellationToken cancellationToken = default
+    )
+    {
+        const string sql = """
+            SELECT
+                Id,
+                ProductName,
+                Description,
+                Amount
+            FROM Coupon
+            WHERE ProductName = @ProductName;
+            """;
+
+        //await using var connection = CreateConnection();
+
+        var coupon = await connection.QuerySingleAsync<Coupon>(
+            new CommandDefinition(
+                sql,
+                new { ProductName = name },
+                cancellationToken: cancellationToken
+            )
         );
 
         return coupon;

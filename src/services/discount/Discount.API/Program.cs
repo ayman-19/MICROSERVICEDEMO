@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+
 namespace Discount.API;
 
 public class Program
@@ -10,6 +12,16 @@ public class Program
         builder
             .Services.AddInfrastructureDependencies(builder.Configuration)
             .AddApplictionDependencies();
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.ListenAnyIP(
+                8082,
+                listenOptions =>
+                {
+                    listenOptions.Protocols = HttpProtocols.Http2;
+                }
+            );
+        });
 
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();

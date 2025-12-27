@@ -43,6 +43,7 @@ services:
     environment:
      - ASPNETCORE_URLS=http://+:8080
      - CacheSettings__Connection=basketdb:6379
+     - GrpcSettings__DiscountUrl=http://discount.api:8082
 
   portainer:
     image: portainer/portainer-ce
@@ -54,17 +55,17 @@ services:
       - portainer_data:/data
 
   discountdb:
-    image: postgres
+    image: postgres:18
     container_name: discountdb
     environment:
-      POSTGRES_PASSWORD: "admin"
-      POSTGRES_USER: "admin"
-      POSTGRES_DB: "discountdb"
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: discountdb
     restart: always 
     ports:
       - "5432:5432"
     volumes:
-      - discountdbdata:/var/lib/postgresql/data
+      - discountdbdata:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d discountdb"]
       interval: 10s
@@ -100,7 +101,7 @@ services:
         condition: service_healthy
     environment:
      - ASPNETCORE_URLS=http://+:8080
-     - PostgreSettings__Connection=server=discountdb;port=5432;Database=discountdb;User Id=admin;Password=admin
+     - PostgreSettings__Connection=Host=discountdb;Port=5432;Database=discountdb;Username=admin;Password=admin
 
     volumes:
       - discountdbdata:/data/db
