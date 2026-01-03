@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: src/services/catalog/Catalog.API/Dockerfile
-
     ports:
      - "8080:8080"
     container_name: catalogapi
@@ -106,10 +105,46 @@ services:
     volumes:
       - discountdbdata:/data/db
 
+      
+  orderdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: orderdb
+    environment:
+      SA_PASSWORD: "P@ssw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "9005:1433"
+    restart: always
+    volumes:
+      - orderdbdata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'P@ssw0rd' -Q 'SELECT 1'"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+    
+
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
+    build:
+      context: .
+      dockerfile: src/services/ordering/Ordering.API/Dockerfile
+    container_name: orderingapi
+    ports:
+      - "8083:8080"
+    depends_on:
+      - orderdb
+    environment:
+      - "ASPNETCORE_URLS: http://+:8080"
+      - "ConnectionStrings__DefaultConnection=Server=orderdb,1433;Database=orderdb;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True;"
+    restart: always
+
 volumes:
   catalogdbdata:
   portainer_data:
   discountdbdata:
   pgadmindata:
+  orderdbdata:
   
+
 

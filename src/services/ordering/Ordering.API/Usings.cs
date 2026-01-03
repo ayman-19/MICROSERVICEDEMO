@@ -1,0 +1,17 @@
+﻿global using System.ComponentModel.DataAnnotations;
+global using System.Net;
+global using System.Reflection;
+global using System.Text;
+global using System.Text.Json;
+global using Asp.Versioning;
+global using MediatR;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.OpenApi;
+global using Ordering.API.Middlewares;
+global using Ordering.Application;
+global using Ordering.Application.Bases.Responses;
+global using Ordering.Application.Exceptions;
+global using Ordering.Application.Features.Orders.Requests;
+global using Ordering.Infrastructure;
+global using Ordering.Infrastructure.Context;
+global using Ordering.Infrastructure.Extensions;

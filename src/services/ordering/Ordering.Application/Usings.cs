@@ -1,0 +1,14 @@
+﻿global using System.Net;
+global using System.Text.Json.Serialization;
+global using AutoMapper;
+global using FluentValidation;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using Ordering.Application.Bases.Requests;
+global using Ordering.Application.Bases.Responses;
+global using Ordering.Application.Behaviores;
+global using Ordering.Application.Features.Orders.DTOs;
+global using Ordering.Application.Features.Orders.Requests;
+global using Ordering.Core.Abstractions;
+global using Ordering.Core.Entities.Orders;
