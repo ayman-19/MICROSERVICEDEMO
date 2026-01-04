@@ -12,7 +12,7 @@ public sealed class ExceptionHandler() : IMiddleware
         {
             var (statusCode, message) = MapExceptionToResponse(ex);
 
-            var response = new Response
+            var response = new Application.Bases.Responses.Response
             {
                 Success = false,
                 StatusCode = statusCode,

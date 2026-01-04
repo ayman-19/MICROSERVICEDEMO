@@ -2,6 +2,7 @@
 global using System.Text.Json.Serialization;
 global using AutoMapper;
 global using Basket.Application.Bases.Responses;
+global using Basket.Application.Features.CheckOuts.Requests;
 global using Basket.Application.Features.ShopingCarts.DTOs;
 global using Basket.Application.Features.ShopingCarts.Requests;
 global using Basket.Application.Grpcs.Services.Implementations;
@@ -11,6 +12,7 @@ global using Basket.Core.Entities.ShopingCarts;
 global using Basket.Core.Entities.ShopingCartsp;
 global using Catalog.Application.Bases.Responses;
 global using Discount.Grpc.Protos;
+global using EventBus.RabbitMQ.Events;
 global using MediatR;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;

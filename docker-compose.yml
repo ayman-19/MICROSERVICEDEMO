@@ -39,10 +39,12 @@ services:
     container_name: basketapi
     depends_on:
      - basketdb
+     - rabbitmq
     environment:
      - ASPNETCORE_URLS=http://+:8080
      - CacheSettings__Connection=basketdb:6379
      - GrpcSettings__DiscountUrl=http://discount.api:8082
+     - RabbitMQSetting__HostAddress=amqp://guest:guest@rabbitmq:5672
 
   portainer:
     image: portainer/portainer-ce
@@ -134,9 +136,20 @@ services:
       - "8083:8080"
     depends_on:
       - orderdb
+      - rabbitmq
     environment:
       - "ASPNETCORE_URLS: http://+:8080"
       - "ConnectionStrings__DefaultConnection=Server=orderdb,1433;Database=orderdb;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True;"
+      - "RabbitMQSetting__HostAddress=amqp://guest:guest@rabbitmq:5672"
+    restart: always
+
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     restart: always
 
 volumes:

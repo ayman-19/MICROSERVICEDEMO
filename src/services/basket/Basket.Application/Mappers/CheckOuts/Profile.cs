@@ -1,3 +1,9 @@
 ﻿namespace Basket.Application.Mappers.CheckOuts;
 
-internal class Profile { }
+public sealed class CheckOutProfile : Profile
+{
+    public CheckOutProfile()
+    {
+        CreateMap<CheckOutCommand, BasketCheckedOutEvent>();
+    }
+}

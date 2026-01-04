@@ -1,6 +1,7 @@
 ﻿global using System.Net;
 global using System.Text.Json.Serialization;
 global using AutoMapper;
+global using EventBus.RabbitMQ.Events;
 global using FluentValidation;
 global using MediatR;
 global using Microsoft.EntityFrameworkCore;

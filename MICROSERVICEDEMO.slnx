@@ -1,5 +1,8 @@
 <Solution>
   <Folder Name="/src/" />
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/EventBus.RabbitMQ/EventBus.RabbitMQ.csproj" Id="53d6bc36-0bc1-4129-bcc5-29a42b270fbc" />
+  </Folder>
   <Folder Name="/src/services/" />
   <Folder Name="/src/services/basket/">
     <Project Path="src/services/basket/Basket.API/Basket.API.csproj" Id="024e82b0-4e18-4f2e-9570-505e544d02df" />

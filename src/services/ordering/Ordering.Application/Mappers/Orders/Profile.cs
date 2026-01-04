@@ -6,5 +6,7 @@ public sealed class OrderProfile : Profile
     {
         CreateMap<Order, OrderDto>();
         CreateMap<CheckoutOrderCommand, Order>();
+        CreateMap<UpdateOrderCommand, Order>();
+        CreateMap<BasketCheckedOutEvent, CheckoutOrderCommand>();
     }
 }

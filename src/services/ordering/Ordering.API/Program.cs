@@ -35,6 +35,25 @@ public class Program
             opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
         builder.Services.AddControllers();
+        builder.Services.AddScoped<BasketOrderConsumer>();
+        builder.Services.AddMassTransit(config =>
+        {
+            config.AddConsumer<BasketOrderConsumer>();
+            config.UsingRabbitMq(
+                (ctx, cfg) =>
+                {
+                    cfg.Host(builder.Configuration["RabbitMQSetting:HostAddress"]);
+                    cfg.ReceiveEndpoint(
+                        RabbitMqConstants.BasketCheckedOutQueue,
+                        e =>
+                        {
+                            e.ConfigureConsumer<BasketOrderConsumer>(ctx);
+                        }
+                    );
+                }
+            );
+        });
+        builder.Services.AddMassTransitHostedService();
         //builder.Services.AddOpenApi();
         var app = builder.Build();
         app.UseMiddleware<ExceptionHandler>();
