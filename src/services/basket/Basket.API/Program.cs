@@ -1,5 +1,3 @@
-using MassTransit;
-
 namespace Basket.API;
 
 public class Program
@@ -7,16 +5,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddMassTransit(config =>
-        {
-            config.UsingRabbitMq(
-                (ctx, cfg) =>
-                {
-                    cfg.Host(builder.Configuration["RabbitMQSetting:HostAddress"]);
-                }
-            );
-        });
-        builder.Services.AddMassTransitHostedService();
+        builder.Host.UseSerilog(LoggingExtensions.Configure());
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(opt =>
         {

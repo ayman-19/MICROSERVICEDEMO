@@ -18,3 +18,5 @@ global using Catalog.Infrastructure.Settings;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.OpenApi;
+global using Serilog;
+global using Shared.Logging;

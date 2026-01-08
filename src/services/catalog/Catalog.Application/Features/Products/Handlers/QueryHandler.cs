@@ -1,6 +1,10 @@
 ﻿namespace Catalog.Application.Features.Products.Handlers;
 
-public sealed record ProductQueryHandler(IProductRepository productRepository, IMapper mapper)
+public sealed record ProductQueryHandler(
+    IProductRepository productRepository,
+    IMapper mapper,
+    ILogger<ProductQueryHandler> logger
+)
     : IRequestHandler<PaginateProductsQuery, PaginationResponse<IEnumerable<ProductDto>>>,
         IRequestHandler<GetProductByIdQuery, ResponseOf<ProductDto>>
 {
@@ -34,6 +38,12 @@ public sealed record ProductQueryHandler(IProductRepository productRepository, I
     )
     {
         var product = await productRepository.FindAsync(request.Id, cancellationToken);
+        logger.LogInformation(
+            "Product with ID {ProductId} retrieved: {@Product}",
+            request.Id,
+            product
+        );
+
         return new() { Result = mapper.Map<ProductDto>(product) };
     }
 }

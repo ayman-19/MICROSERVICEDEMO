@@ -2,6 +2,7 @@
   <Folder Name="/src/" />
   <Folder Name="/src/Infrastructure/">
     <Project Path="src/Infrastructure/EventBus.RabbitMQ/EventBus.RabbitMQ.csproj" Id="53d6bc36-0bc1-4129-bcc5-29a42b270fbc" />
+    <Project Path="src/Infrastructure/Shared.Logging/Shared.Logging.csproj" Id="7cf37acc-789b-4c2d-bfd2-df432ea9d587" />
   </Folder>
   <Folder Name="/src/services/" />
   <Folder Name="/src/services/basket/">

@@ -3,7 +3,6 @@ global using Basket.Core.Base;
 global using Basket.Core.Entities.CheckOuts;
 global using Basket.Core.Entities.ShopingCartItems;
 global using Basket.Core.Entities.ShopingCarts;
-global using Basket.Core.Entities.ShopingCartsp;
 global using Basket.Infrastructure.Implementaions;
 global using Microsoft.Extensions.Caching.Distributed;
 global using Microsoft.Extensions.Configuration;

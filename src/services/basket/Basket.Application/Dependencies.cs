@@ -14,6 +14,17 @@ public static class Depndencies
         );
         services.AddScoped<IDiscountService, DiscountService>();
 
+        services.AddMassTransit(config =>
+        {
+            config.UsingRabbitMq(
+                (ctx, cfg) =>
+                {
+                    cfg.Host(configuration["RabbitMQSetting:HostAddress"]);
+                }
+            );
+        });
+        services.AddMassTransitHostedService();
+
         return services;
     }
 }

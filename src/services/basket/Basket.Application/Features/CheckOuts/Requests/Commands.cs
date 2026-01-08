@@ -1,6 +1,6 @@
 ﻿namespace Basket.Application.Features.CheckOuts.Requests;
 
-public sealed record CheckOutCommand
+public sealed record CheckOutCommand : IRequest<ResponseOf<ShopingCartDto>>
 {
     public Guid UserId { get; set; }
     public string Email { get; set; }

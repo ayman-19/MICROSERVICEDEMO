@@ -1,14 +1,12 @@
 ﻿global using Asp.Versioning;
-global using AutoMapper;
 global using Basket.Application;
+global using Basket.Application.Bases.Responses;
 global using Basket.Application.Features.CheckOuts.Requests;
 global using Basket.Application.Features.ShopingCarts.DTOs;
 global using Basket.Application.Features.ShopingCarts.Requests;
 global using Basket.Infrastructure;
-global using Catalog.Application.Bases.Responses;
-global using EventBus.RabbitMQ.Common;
-global using EventBus.RabbitMQ.Events;
-global using MassTransit;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.OpenApi;
+global using Serilog;
+global using Shared.Logging;

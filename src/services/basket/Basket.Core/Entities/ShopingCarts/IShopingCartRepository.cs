@@ -1,3 +1,3 @@
-﻿namespace Basket.Core.Entities.ShopingCartsp;
+﻿namespace Basket.Core.Entities.ShopingCarts;
 
 public interface IShopingCartRepository : IRepository<ShopingCart> { }

@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application.Bases.Responses;
+﻿namespace Basket.Application.Bases.Responses;
 
 public record ResponseOf<TResponse> : Response
 {
