@@ -17,7 +17,10 @@ public sealed record ProductCommandHandler(
         var product = await productRepository.FindAsync(request.Id, cancellationToken);
         var success = await productRepository.Delete(product, cancellationToken);
         if (success)
+        {
+            await productSearchRepository.DeleteAsync(request.Id, cancellationToken);
             return new() { Result = mapper.Map<ProductDto>(product) };
+        }
         return new();
     }
 
@@ -56,7 +59,25 @@ public sealed record ProductCommandHandler(
         mapper.Map(request, product);
         var success = await productRepository.Update(product, cancellationToken);
         if (success)
+        {
+            await productSearchRepository.UpdateAsync(
+                new ProductSearchDocument
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Summary = product.Summary,
+                    ImageUrl = product.ImageUrl,
+                    Price = (double)product.Price,
+                    BrandId = product.Brand.Id,
+                    BrandName = product.Brand.Name,
+                    TypeName = product.Type.Name,
+                    TypeId = product.Type.Id,
+                },
+                cancellationToken
+            );
+
             return new() { Result = mapper.Map<ProductDto>(product) };
+        }
         return new();
     }
 }

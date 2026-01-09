@@ -9,6 +9,11 @@ public class ProductSearchRepository(ElasticsearchClient client) : IProductSearc
         await client.IndexAsync(product, i => i.Index(IndexName), ct);
     }
 
+    public Task DeleteAsync(string id, CancellationToken ct)
+    {
+        return client.DeleteAsync<ProductSearchDocument>(id, d => d.Index(IndexName), ct);
+    }
+
     public async Task<ProductSearchDocument> GetByIdAsync(string id, CancellationToken ct)
     {
         var response = await client.GetAsync<ProductSearchDocument>(
@@ -59,5 +64,10 @@ public class ProductSearchRepository(ElasticsearchClient client) : IProductSearc
         );
 
         return response.Hits.Select(h => h.Source);
+    }
+
+    public Task UpdateAsync(ProductSearchDocument product, CancellationToken ct)
+    {
+        return client.IndexAsync(product, i => i.Index(IndexName).Id(product.Id), ct);
     }
 }
