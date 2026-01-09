@@ -8,9 +8,21 @@ public sealed class ProductController(ISender sender) : BaseController
         CancellationToken cancellationToken
     ) => Ok(await sender.Send(new GetProductByIdQuery(id), cancellationToken));
 
+    [HttpGet("v2/{id}")]
+    public async Task<ActionResult<ResponseOf<ProductDto>>> GetByIdAsync(
+        [Required] [FromRoute] string id,
+        CancellationToken cancellationToken
+    ) => Ok(await sender.Send(new GetProductByIdV2Query(id), cancellationToken));
+
     [HttpGet]
     public async Task<ActionResult<PaginationResponse<IEnumerable<ProductDto>>>> GetAsync(
         [FromQuery] PaginateProductsQuery query,
+        CancellationToken cancellationToken
+    ) => Ok(await sender.Send(query, cancellationToken));
+
+    [HttpGet("v2")]
+    public async Task<ActionResult<PaginationResponse<IEnumerable<ProductDto>>>> GetAsync(
+        [FromQuery] PaginateProductsV2Query query,
         CancellationToken cancellationToken
     ) => Ok(await sender.Send(query, cancellationToken));
 

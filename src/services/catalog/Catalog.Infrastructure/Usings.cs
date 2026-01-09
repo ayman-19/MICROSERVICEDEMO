@@ -1,4 +1,6 @@
 ﻿global using System.Linq.Expressions;
+global using Catalog.Application.Documents;
+global using Catalog.Application.Interfaces;
 global using Catalog.Core.Abstractions;
 global using Catalog.Core.Base;
 global using Catalog.Core.Entities.Brands;
@@ -7,8 +9,11 @@ global using Catalog.Core.Entities.Types;
 global using Catalog.Core.Enums.Entities;
 global using Catalog.Core.Extensions;
 global using Catalog.Infrastructure.Data;
+global using Catalog.Infrastructure.HostedServices;
 global using Catalog.Infrastructure.Implementations;
+global using Elastic.Clients.Elasticsearch;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
 global using MongoDB.Driver;
 global using MongoDB.Driver.Linq;

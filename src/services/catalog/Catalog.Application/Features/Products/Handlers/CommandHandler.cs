@@ -1,6 +1,10 @@
 ﻿namespace Catalog.Application.Features.Products.Handlers;
 
-public sealed record ProductCommandHandler(IProductRepository productRepository, IMapper mapper)
+public sealed record ProductCommandHandler(
+    IProductRepository productRepository,
+    IMapper mapper,
+    IProductSearchRepository productSearchRepository
+)
     : IRequestHandler<CreateProductCommand, ResponseOf<ProductDto>>,
         IRequestHandler<UpdateProductCommand, ResponseOf<ProductDto>>,
         IRequestHandler<DeleteProductCommand, ResponseOf<ProductDto>>
@@ -24,6 +28,22 @@ public sealed record ProductCommandHandler(IProductRepository productRepository,
     {
         var product = mapper.Map<Product>(request);
         await productRepository.CreateAsync(product, cancellationToken);
+
+        await productSearchRepository.CreateAsync(
+            new ProductSearchDocument
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Summary = product.Summary,
+                ImageUrl = product.ImageUrl,
+                Price = (double)product.Price,
+                BrandId = product.Brand.Id,
+                BrandName = product.Brand.Name,
+                TypeName = product.Type.Name,
+                TypeId = product.Type.Id,
+            },
+            cancellationToken
+        );
         return new() { Result = mapper.Map<ProductDto>(product) };
     }
 
