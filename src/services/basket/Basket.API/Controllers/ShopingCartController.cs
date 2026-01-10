@@ -1,5 +1,6 @@
 ﻿namespace Basket.API.Controllers;
 
+[ApiVersion("1")]
 public sealed class ShopingCartController(ISender sender) : BaseController
 {
     [HttpPost]

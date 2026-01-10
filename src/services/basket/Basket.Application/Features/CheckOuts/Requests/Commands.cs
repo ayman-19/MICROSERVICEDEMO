@@ -15,3 +15,9 @@ public sealed record CheckOutCommand : IRequest<ResponseOf<ShopingCartDto>>
     public string CVV { get; set; }
     public int PaymentMethod { get; set; }
 }
+
+public sealed record CheckOutCommandV2 : IRequest<ResponseOf<ShopingCartDto>>
+{
+    public Guid UserId { get; set; }
+    public double TotalPrice { get; set; }
+}

@@ -1,4 +1,5 @@
-﻿global using Asp.Versioning;
+﻿global using System.Reflection;
+global using Asp.Versioning;
 global using Basket.Application;
 global using Basket.Application.Bases.Responses;
 global using Basket.Application.Features.CheckOuts.Requests;
@@ -10,3 +11,4 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.OpenApi;
 global using Serilog;
 global using Shared.Logging;
+global using Swashbuckle.AspNetCore.SwaggerGen;

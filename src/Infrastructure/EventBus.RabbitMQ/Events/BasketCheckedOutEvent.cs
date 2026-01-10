@@ -16,3 +16,10 @@ public sealed record BasketCheckedOutEvent : IntegrateEvent
     public string CVV { get; set; }
     public int PaymentMethod { get; set; }
 }
+
+public sealed record BasketCheckedOutEventV2 : IntegrateEvent
+{
+    public Guid UserId { get; set; }
+    public string UserName { get; set; }
+    public double TotalPrice { get; set; }
+}
