@@ -195,6 +195,17 @@ services:
     depends_on:
       - elasticsearch
 
+  ocelot.apigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapigateway
+    build:
+      context: .
+      dockerfile: src/Gateway/Ocelot.APIGateway/Dockerfile
+    environment:
+      - "ASPNETCORE_URLS: http://+:8080"
+    
+    ports:
+      - "8085:8080"
+
 volumes:
   catalogdbdata:
   portainer_data:

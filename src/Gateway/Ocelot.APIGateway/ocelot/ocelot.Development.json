@@ -1,0 +1,255 @@
+{
+  "Routes": [
+    // ===========================
+    // Basket Service
+    // ===========================
+    {
+      "Key": "basket-get-post-put",
+      "UpstreamPathTemplate": "/basket/ShopingCart",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "DownstreamPathTemplate": "/api/v1/ShopingCart",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8081
+        }
+      ]
+    },
+    {
+      "Key": "basket-by-user",
+      "UpstreamPathTemplate": "/basket/ShopingCart/{userId}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/api/v1/ShopingCart/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8081
+        }
+      ]
+    },
+    {
+      "Key": "basket-checkout",
+      "UpstreamPathTemplate": "/basket/ShopingCart/checkout",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/v1/ShopingCart/checkout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8081
+        }
+      ]
+    },
+    {
+      "Key": "basket-checkout-v2",
+      "UpstreamPathTemplate": "/basket/ShopingCart/checkout-v2",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/v2/ShopingCart/checkout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8081
+        }
+      ]
+    },
+
+    // ===========================
+    // Ordering Service
+    // ===========================
+
+    {
+      "Key": "order-checkout",
+      "UpstreamPathTemplate": "/order/checkout",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/v1/Order/checkout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8083
+        }
+      ]
+    },
+    {
+      "Key": "order-get-all",
+      "UpstreamPathTemplate": "/order",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/v1/Order",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8083
+        }
+      ]
+    },
+    {
+      "Key": "order-update",
+      "UpstreamPathTemplate": "/order",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "DownstreamPathTemplate": "/api/v1/Order",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8083
+        }
+      ]
+    },
+    {
+      "Key": "order-get-by-id",
+      "UpstreamPathTemplate": "/order/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/v1/Order/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8083
+        }
+      ]
+    },
+    {
+      "Key": "order-delete",
+      "UpstreamPathTemplate": "/order/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "DownstreamPathTemplate": "/api/v1/Order/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8083
+        }
+      ]
+    },
+    // ===========================
+    // Catalog Service
+    // ===========================
+
+    {
+      "Key": "catalog-brand",
+      "UpstreamPathTemplate": "/catalog/brand",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "DownstreamPathTemplate": "/api/v1/Brand",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "Key": "catalog-brand-by-id",
+      "UpstreamPathTemplate": "/catalog/brand/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/api/v1/Brand/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "Key": "catalog-product",
+      "UpstreamPathTemplate": "/catalog/product",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "DownstreamPathTemplate": "/api/v1/Product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "Key": "catalog-product-by-id",
+      "UpstreamPathTemplate": "/catalog/product/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/api/v1/Product/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8080
+        }
+      ]
+    },
+
+    {
+      "Key": "catalog-product-v2",
+      "UpstreamPathTemplate": "/catalog/product/v2",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/v2/Product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "Key": "catalog-product-v2-by-id",
+      "UpstreamPathTemplate": "/catalog/product/v2/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/v2/Product/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8080
+        }
+      ]
+    },
+
+    {
+      "Key": "catalog-type",
+      "UpstreamPathTemplate": "/catalog/type",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "DownstreamPathTemplate": "/api/v1/Type",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "Key": "catalog-type-by-id",
+      "UpstreamPathTemplate": "/catalog/type/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/api/v1/Type/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "Key": "gateway-root",
+      "UpstreamPathTemplate": "/",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ocelot.apigateway",
+          "Port": 8080
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:8085"
+  }
+}
